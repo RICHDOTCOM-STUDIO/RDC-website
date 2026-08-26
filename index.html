@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RICHDOTCOM STUDIO | RDC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --accent: #ffffff; --bg: #000000; --text-muted: #888888; --detail-color: #555; --electric-blue: #00f2ff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; } 
+        html { scroll-behavior: smooth; }
+        
+        body { 
+            background-color: var(--bg); color: #fff; 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            line-height: 1.6; overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        #custom-cursor {
+            position: fixed; width: 8px; height: 8px; background: #fff;
+            border-radius: 50%; pointer-events: none; z-index: 10000;
+            mix-blend-mode: difference; transition: transform 0.1s ease;
+        }
+        #cursor-follower {
+            position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%; pointer-events: none; z-index: 9999;
+            transition: transform 0.2s ease-out, width 0.3s, height 0.3s;
+        }
+
+        /* --- NAVIGATION --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; z-index: 1000; 
+            padding: 20px 5%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo-img { height: 24px; width: auto; margin-right: 15px; }
+        nav ul { display: flex; list-style: none; gap: 20px; }
+        nav ul li a { text-decoration: none; color: #fff; font-size: 0.6rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; transition: 0.3s; }
+        nav ul li a:hover { opacity: 1; }
+        .nav-btn { background: #fff; color: #000; padding: 8px 18px; text-decoration: none; font-size: 0.65rem; font-weight: 900; border-radius: 2px; text-transform: uppercase; transition: 0.3s; }
+
+        /* --- SOCIAL SIDEBAR --- */
+        .social-sidebar {
+            position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 25px; z-index: 1500;
+            align-items: center;
+        }
+        .social-sidebar a i { color: #fff; font-size: 1.1rem; opacity: 0.4; transition: 0.4s; }
+        .social-sidebar a:hover i { opacity: 1; transform: scale(1.3); }
+
+        /* --- HERO --- */
+        .hero { 
+            position: relative; height: 100vh; width: 100%; 
+            display: flex; align-items: flex-end; justify-content: flex-start; 
+            padding: 0 5% 7% 5%; overflow: hidden; 
+            background: #000;
+        }
+        .video-background-wrapper {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; overflow: hidden; pointer-events: none;
+            filter: brightness(0.65);
+        }
+        .video-background-wrapper iframe {
+            position: absolute; top: 50%; left: 50%;
+            width: 100vw; height: 56.25vw;
+            min-height: 100vh; min-width: 177.77vh;
+            transform: translate(-50%, -50%);
+            border: none;
+        }
+        .hero-content { position: relative; z-index: 2; }
+        .hero-content h1 { font-size: clamp(1.4rem, 3.5vw, 2.4rem); font-weight: 900; line-height: 1.1; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px; animation: glitch 5s infinite; }
+        .explore-btn { background: #fff; color: #000; padding: 10px 22px; font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; text-decoration: none; border-radius: 2px; transition: 0.3s; }
+        .mute-control { position: absolute; bottom: 30px; right: 30px; z-index: 10; cursor: pointer; opacity: 0.5; transition: 0.3s; }
+
+        @keyframes glitch { 0% { text-shadow: none; transform: translate(0); } 2% { text-shadow: 2px 0 #00f2ff, -2px 0 #ff00c1; transform: translate(-1px, 1px); } 4% { text-shadow: none; transform: translate(0); } 100% { text-shadow: none; } }
+
+        /* --- SECTIONS --- */
+        section { padding: 100px 5%; background: var(--bg); position: relative; z-index: 2; }
+        .section-title { font-size: 1.8rem; text-transform: uppercase; letter-spacing: 6px; font-weight: 900; margin-bottom: 50px; border-left: 4px solid #fff; padding-left: 25px; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- SHOWCASE --- */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1200px; margin: 0 auto; }
+        .portfolio-item { position: relative; aspect-ratio: 1/1; background: #050505; border: 1px solid #111; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.4s; width: 100%; }
+        .portfolio-item:hover { border-color: #fff; background: #080808; }
+
+        /* Video Editing Logo */
+        .art-desktop { width: 65px; height: 45px; border: 2px solid #333; border-radius: 3px; position: relative; transition: 0.4s; }
+        .art-desktop .timeline { position: absolute; bottom: 6px; left: 6px; width: 45px; height: 4px; background: #222; border-radius: 10px; transition: 0.4s; }
+        .art-desktop .panel { position: absolute; top: 6px; right: -12px; width: 18px; height: 22px; border: 1px solid #222; background: #000; opacity: 0; transition: 0.4s; }
+
+        .portfolio-item:hover .art-desktop { border-color: #fff; transform: translateY(-5px); }
+        .portfolio-item:hover .panel { opacity: 1; right: 6px; border-color: #fff; }
+        .portfolio-item:hover .timeline { background: #fff; box-shadow: 0 0 12px #fff; }
+
+        /* Motion Graphics Hover */
+        .art-box { width: 55px; height: 55px; border: 1px solid #222; position: relative; border-radius: 4px; }
+        .art-ball { position: absolute; bottom: 5px; left: 50%; width: 14px; height: 14px; background: #333; border-radius: 50%; transform: translateX(-50%); }
+        .portfolio-item:hover .art-ball { background: #fff; animation: fastBounce 0.45s infinite alternate cubic-bezier(0.4, 0, 0.6, 1); box-shadow: 0 0 15px #fff; }
+        @keyframes fastBounce { 0% { bottom: 5px; transform: translateX(-50%) scale(1.3, 0.7); } 100% { bottom: 38px; transform: translateX(-50%) scale(0.8, 1.2); } }
+
+        /* AI Innovation Hover */
+        .art-ai-neural { width: 65px; height: 65px; position: relative; display: flex; align-items: center; justify-content: center; }
+        .neural-node { width: 18px; height: 18px; background: #222; border-radius: 50%; z-index: 2; transition: 0.4s; }
+        .neural-orbit { position: absolute; width: 45px; height: 45px; border: 1px dashed #222; border-radius: 50%; animation: spinOrbit 10s infinite linear; }
+        .bolt { position: absolute; background: var(--electric-blue); width: 1px; height: 18px; opacity: 0; }
+        .portfolio-item:hover .neural-node { background: var(--electric-blue); box-shadow: 0 0 25px var(--electric-blue); }
+        .portfolio-item:hover .bolt { opacity: 1; animation: boltFlicker 0.2s infinite; }
+        @keyframes boltFlicker { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+        @keyframes spinOrbit { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .portfolio-label { font-weight: 900; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 4px; opacity: 0.4; transition: 0.4s; margin-top: 35px; }
+        .portfolio-item:hover .portfolio-label { opacity: 1; }
+
+        /* --- SHOWCASE BACKDROP --- */
+        .showcase-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.94);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .showcase-backdrop.active {
+            display: block !important;
+            opacity: 1;
+        }
+
+        /* --- SUB-SEGMENTS: SMOOTH CENTERED MODAL --- */
+        .sub-segments {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.96);
+            z-index: 3100;
+            background: #080808;
+            border: 1px solid #1a1a1a;
+            padding: 55px 45px 45px;
+            width: 1050px;
+            max-width: 92vw;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.98);
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .sub-segments.active {
+            display: flex !important;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .sub-segments-close {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            color: #fff;
+            font-size: 1.8rem;
+            opacity: 0.5;
+            transition: 0.3s;
+            z-index: 5;
+            line-height: 1;
+        }
+        .sub-segments-close:hover {
+            opacity: 1;
+            transform: scale(1.15) rotate(90deg);
+        }
+
+        /* --- CARD STYLING & SIZES --- */
+        .segment-card { 
+            position: relative; 
+            aspect-ratio: 16/9; 
+            background: #0c0c0c; 
+            border: 1px solid #1c1c1c; 
+            overflow: hidden; 
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .segment-card img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            opacity: 0.5; 
+            transition: opacity 0.4s ease, transform 0.5s ease; 
+        }
+        .segment-card:hover { 
+            border-color: rgba(255,255,255,0.4); 
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+        .segment-card:hover img { 
+            opacity: 0.95; 
+            transform: scale(1.05); 
+        }
+        .play-indicator {
+            position: absolute;
+            font-size: 1.6rem;
+            color: #fff;
+            opacity: 0.7;
+            pointer-events: none;
+            transition: 0.3s;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
+        }
+        .segment-card:hover .play-indicator {
+            opacity: 1;
+            transform: scale(1.2);
+            color: var(--electric-blue);
+        }
+        .segment-label { 
+            position: absolute; 
+            bottom: 10px; 
+            width: 100%; 
+            text-align: center; 
+            font-size: 0.6rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            color: #fff; 
+            opacity: 0.8; 
+            letter-spacing: 2.5px; 
+            pointer-events: none;
+            transition: opacity 0.3s, color 0.3s;
+            z-index: 2;
+        }
+
+        /* Category Selector Buttons */
+        .category-selector-card {
+            flex: 0 1 190px !important;
+            max-width: 210px;
+            cursor: pointer;
+            padding-bottom: 20px;
+        }
+        .category-selector-card:hover .segment-label {
+            opacity: 1;
+            color: #fff;
+        }
+
+        /* --- VECTOR LOGOS: VIDEO EDITING --- */
+        .icon-corporate { width: 44px; height: 32px; border: 2px solid #333; border-radius: 3px; position: relative; transition: 0.4s; }
+        .icon-corporate::before { content: ''; position: absolute; top: -7px; left: 50%; transform: translateX(-50%); width: 16px; height: 6px; border: 2px solid #333; border-bottom: none; border-radius: 2px 2px 0 0; transition: 0.4s; }
+        .icon-corporate .briefcase-line { position: absolute; top: 12px; left: 0; width: 100%; height: 1px; background: #222; transition: 0.4s; }
+        .icon-corporate .briefcase-lock { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: #222; border-radius: 1px; transition: 0.4s; }
+        
+        .category-selector-card:hover .icon-corporate { border-color: #fff; transform: translateY(-3px); }
+        .category-selector-card:hover .icon-corporate::before { border-color: #fff; }
+        .category-selector-card:hover .briefcase-line { background: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.5); }
+        .category-selector-card:hover .briefcase-lock { background: #fff; }
+
+        .icon-wedding-rings { width: 50px; height: 38px; position: relative; display: flex; align-items: center; justify-content: center; transition: 0.4s; }
+        .ring-left, .ring-right { position: absolute; width: 22px; height: 22px; border: 2px solid #333; border-radius: 50%; transition: 0.4s; }
+        .ring-left { left: 6px; top: 10px; }
+        .ring-right { right: 6px; top: 10px; }
+        .ring-diamond { position: absolute; top: 0px; right: 13px; width: 7px; height: 7px; background: #333; transform: rotate(45deg); transition: 0.4s; }
+        
+        .category-selector-card:hover .icon-wedding-rings { transform: translateY(-3px); }
+        .category-selector-card:hover .ring-left { border-color: #fff; transform: translateX(-2px); box-shadow: 0 0 8px rgba(255,255,255,0.3); }
+        .category-selector-card:hover .ring-right { border-color: #fff; transform: translateX(2px); box-shadow: 0 0 8px rgba(255,255,255,0.3); }
+        .category-selector-card:hover .ring-diamond { background: #fff; box-shadow: 0 0 12px #fff, 0 0 20px #00f2ff; }
+
+        .icon-reel { width: 26px; height: 42px; border: 2px solid #333; border-radius: 4px; position: relative; transition: 0.4s; }
+        .icon-reel::before { content: ''; position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 8px; height: 2px; background: #222; border-radius: 2px; transition: 0.4s; }
+        .icon-reel .reel-play { position: absolute; top: 50%; left: 54%; transform: translate(-50%, -50%); width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #333; transition: 0.4s; }
+        
+        .category-selector-card:hover .icon-reel { border-color: #fff; transform: translateY(-3px); }
+        .category-selector-card:hover .icon-reel::before { background: #fff; }
+        .category-selector-card:hover .reel-play { border-left-color: #fff; filter: drop-shadow(0 0 6px rgba(255,255,255,0.7)); }
+
+        /* --- VECTOR LOGOS: MOTION GRAPHICS SUB-CATEGORIES --- */
+        .icon-digital-invite { width: 44px; height: 32px; border: 2px solid #333; border-radius: 4px; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3px; transition: 0.4s; }
+        .icon-digital-invite .d-line { width: 24px; height: 2px; background: #222; border-radius: 2px; transition: 0.4s; }
+        .icon-digital-invite .d-line.short { width: 14px; }
+        .icon-digital-invite .d-seal { position: absolute; top: -6px; right: -5px; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #333; background: #080808; transition: 0.4s; }
+        
+        .category-selector-card:hover .icon-digital-invite { border-color: #fff; transform: translateY(-3px); box-shadow: 0 0 15px rgba(255,255,255,0.15); }
+        .category-selector-card:hover .icon-digital-invite .d-line { background: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.6); }
+        .category-selector-card:hover .icon-digital-invite .d-seal { border-color: var(--electric-blue); background: var(--electric-blue); box-shadow: 0 0 10px var(--electric-blue); }
+
+        .icon-social-media-hub { width: 40px; height: 38px; position: relative; transition: 0.4s; }
+        .icon-social-media-hub .hub-node { position: absolute; width: 8px; height: 8px; border: 2px solid #333; border-radius: 50%; background: #080808; transition: 0.4s; z-index: 2; }
+        .icon-social-media-hub .node-main { top: 15px; left: 4px; }
+        .icon-social-media-hub .node-top { top: 3px; right: 6px; }
+        .icon-social-media-hub .node-bottom { bottom: 3px; right: 6px; }
+        .icon-social-media-hub .hub-branch { position: absolute; height: 2px; background: #222; transform-origin: left center; transition: 0.4s; }
+        .icon-social-media-hub .branch-top { top: 18px; left: 10px; width: 22px; transform: rotate(-28deg); }
+        .icon-social-media-hub .branch-bottom { top: 20px; left: 10px; width: 22px; transform: rotate(28deg); }
+        
+        .category-selector-card:hover .icon-social-media-hub { transform: scale(1.1); }
+        .category-selector-card:hover .hub-node { border-color: #fff; }
+        .category-selector-card:hover .node-main { background: #fff; box-shadow: 0 0 10px #fff; }
+        .category-selector-card:hover .node-top { background: var(--electric-blue); border-color: var(--electric-blue); box-shadow: 0 0 10px var(--electric-blue); }
+        .category-selector-card:hover .node-bottom { background: #fff; box-shadow: 0 0 8px #fff; }
+        .category-selector-card:hover .hub-branch { background: #fff; box-shadow: 0 0 6px rgba(255,255,255,0.4); }
+
+        /* Big Horizontal Video Display Cards */
+        .video-card-item {
+            flex: 0 1 320px !important;
+            aspect-ratio: 16/9 !important;
+            max-width: 90%;
+            cursor: pointer;
+        }
+
+        /* Portrait Vertical Cards */
+        .vertical-card-item {
+            flex: 0 1 200px !important;
+            aspect-ratio: 9/16 !important;
+            max-width: 80%;
+            cursor: pointer;
+        }
+
+        /* --- NESTED VIDEO GROUPS --- */
+        .social-videos { 
+            display: none; 
+            flex-basis: 100%; 
+            margin-top: 25px; 
+            opacity: 0;
+            transform: translateY(12px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .social-videos.active { 
+            display: block !important; 
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .social-type-group { margin-bottom: 30px; }
+        .social-type-group:last-child { margin-bottom: 0; }
+        .social-type-title { 
+            font-size: 0.75rem; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: 4px; 
+            opacity: 0.5; 
+            margin-bottom: 15px; 
+            text-align: center; 
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 8px;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .social-video-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+
+        /* --- VIDEO LIGHTBOX --- */
+        .video-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.96); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 5000; align-items: center; justify-content: center; padding: 40px 5%; }
+        .video-modal.active { display: flex; }
+        .video-modal-inner { position: relative; width: 100%; max-width: 1050px; aspect-ratio: 16/9; display: flex; justify-content: center; align-items: center; }
+        .video-modal-inner.vertical-modal { max-width: 480px; aspect-ratio: 9/16; }
+        .video-modal-inner iframe { width: 100%; height: 100%; border: none; border-radius: 4px; }
+        .video-modal-close { position: absolute; top: -45px; right: 0; color: #fff; font-size: 1.8rem; line-height: 1; opacity: 0.8; transition: 0.3s; }
+        .video-modal-close:hover { opacity: 1; transform: scale(1.15); }
+
+        /* --- CAPABILITIES --- */
+        .services-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px; }
+        .service-card h3 { font-size: 1.1rem; text-transform: uppercase; margin-bottom: 30px; letter-spacing: 3px; color: #fff; border-bottom: 1px solid #111; padding-bottom: 15px; }
+        .service-card ul { list-style: none; color: var(--text-muted); font-size: 0.85rem; }
+        .service-card ul li { margin-bottom: 15px; padding-left: 20px; position: relative; }
+        .service-card ul li::before { content: '→'; position: absolute; left: 0; color: #fff; }
+
+        /* --- NEWS --- */
+        .news-container { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; margin-top: 20px; }
+        .news-card { min-width: 350px; background: #080808; border: 1px solid #111; padding: 40px; transition: 0.4s; }
+        .news-card h3 { font-size: 1.1rem; text-transform: uppercase; margin-bottom: 8px; }
+
+        /* --- COLLABORATIONS --- */
+        .client-ticker { overflow: hidden; white-space: nowrap; padding: 50px 0; border-bottom: 1px solid #111; border-top: 1px solid #111; margin-top: 50px; }
+        .ticker-track { 
+            display: flex; width: max-content; 
+            animation: scrollText 25s linear infinite; 
+            align-items: center;
+            will-change: transform;
+            transform: translate3d(0,0,0);
+        } 
+        .ticker-logo { height: 70px; width: auto; margin: 0 100px; opacity: 0.6; transition: transform 0.4s ease; }
+        .ticker-logo:hover { opacity: 1; transform: scale(1.1); }
+        .hyatt-logo { height: 120px; margin: 0 130px; } 
+        .sugar-logo { height: 100px; margin: 0 120px; }
+        @keyframes scrollText { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
+
+        /* --- WHY WORK WITH US --- */
+        .why-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; }
+        .why-card { padding: 45px; border: 1px solid #111; transition: 0.4s; background: #050505; }
+        .why-card h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        .why-card p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* --- CONTACT --- */
+        .contact-container { max-width: 700px; margin: 0 auto; text-align: center; }
+        .contact-form { display: flex; flex-direction: column; gap: 25px; }
+        .contact-form input, .contact-form textarea { background: #0a0a0a; border: 1px solid #222; padding: 20px; color: #fff; outline: none; width: 100%; text-align: center; }
+        .contact-form button { background: #fff; color: #000; padding: 22px; border: none; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
+
+        footer { padding: 50px 5%; border-top: 1px solid #111; text-align: center; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 60px; }
+
+        /* --- PC & MOBILE RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            nav ul { display: none; } 
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .hero { align-items: center; text-align: center; justify-content: center; }
+            .hero-content h1 { font-size: 1.8rem; }
+            .ticker-logo { height: 40px; margin: 0 30px; }
+            .hyatt-logo { height: 60px; }
+            .sugar-logo { height: 50px; }
+            .social-sidebar {
+                position: fixed; bottom: 0; right: 0; top: auto; width: 100%;
+                flex-direction: row; justify-content: space-around; height: 65px;
+                background: rgba(0,0,0,0.95); backdrop-filter: blur(15px);
+                transform: none; border-top: 1px solid rgba(255,255,255,0.1);
+                padding: 0 10px;
+            }
+            .mute-control { bottom: 85px; right: 20px; }
+            .category-selector-card { flex: 0 1 120px !important; }
+            .video-card-item { flex: 0 1 100% !important; }
+            .vertical-card-item { flex: 0 1 140px !important; }
+        }
+
+        /* --- TOUCH DEVICES --- */
+        @media (pointer: coarse) {
+            * { cursor: auto !important; }
+            #custom-cursor, #cursor-follower { display: none !important; }
+        }
+
+        /* --- FORM FEEDBACK --- */
+        .form-status { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; margin-top: 15px; min-height: 18px; }
+        .form-status.success { color: #4ade80; }
+        .form-status.error { color: #f87171; }
+        .contact-form button[disabled] { opacity: 0.5; }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- BACKDROP -->
+    <div id="showcaseBackdrop" class="showcase-backdrop"></div>
+
+    <!-- 1. VIDEO EDITING MODAL -->
+    <div id="editing-segments" class="sub-segments">
+        <span class="sub-segments-close hvr" onclick="closeAllSegments()">&times;</span>
+        
+        <!-- Corporate Selector -->
+        <div class="segment-card category-selector-card hvr" onclick="toggleCategoryGroup('editing-segments', 'corporate-videos')">
+            <div class="icon-corporate">
+                <div class="briefcase-line"></div>
+                <div class="briefcase-lock"></div>
+            </div>
+            <div class="segment-label">Corporate</div>
+        </div>
+
+        <!-- Social Selector -->
+        <div class="segment-card category-selector-card hvr" onclick="toggleCategoryGroup('editing-segments', 'social-videos')">
+            <div class="icon-wedding-rings">
+                <div class="ring-left"></div>
+                <div class="ring-right"></div>
+                <div class="ring-diamond"></div>
+            </div>
+            <div class="segment-label">Social</div>
+        </div>
+
+        <!-- Reel Selector -->
+        <div class="segment-card category-selector-card hvr" onclick="toggleCategoryGroup('editing-segments', 'reel-videos')">
+            <div class="icon-reel">
+                <div class="reel-play"></div>
+            </div>
+            <div class="segment-label">Reel</div>
+        </div>
+
+        <!-- Corporate Videos Container (5 Videos) -->
+        <div id="corporate-videos" class="social-videos">
+            <div class="social-type-group">
+                <div class="social-video-row">
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('-GiV4I9fPtM')">
+                        <img src="https://img.youtube.com/vi/-GiV4I9fPtM/hqdefault.jpg" alt="Corporate 1">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Corporate 1</div>
+                    </div>
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('yHebRElvOlI')">
+                        <img src="https://img.youtube.com/vi/yHebRElvOlI/hqdefault.jpg" alt="Corporate 2">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Corporate 2</div>
+                    </div>
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('QOCA9vSBrXM')">
+                        <img src="https://img.youtube.com/vi/QOCA9vSBrXM/hqdefault.jpg" alt="Corporate 3">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Corporate 3</div>
+                    </div>
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('i4br59EoSeA')">
+                        <img src="https://img.youtube.com/vi/i4br59EoSeA/hqdefault.jpg" alt="Corporate 4">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Corporate 4</div>
+                    </div>
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('-itd60yGJZY')">
+                        <img src="https://img.youtube.com/vi/-itd60yGJZY/hqdefault.jpg" alt="Corporate 5">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Corporate 5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Videos Container -->
+        <div id="social-videos" class="social-videos">
+            <div class="social-type-group">
+                <div class="social-type-title">Wedding</div>
+                <div class="social-video-row">
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('NosMuYueHv0')">
+                        <img src="https://img.youtube.com/vi/NosMuYueHv0/hqdefault.jpg" alt="Wedding 1">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Wedding 1</div>
+                    </div>
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('7EiBlJgpjuQ')">
+                        <img src="https://img.youtube.com/vi/7EiBlJgpjuQ/hqdefault.jpg" alt="Wedding 2">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Wedding 2</div>
+                    </div>
+                </div>
+            </div>
+            <div class="social-type-group">
+                <div class="social-type-title">Pre-Wedding</div>
+                <div class="social-video-row">
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('jgjtPqyo910')">
+                        <img src="https://img.youtube.com/vi/jgjtPqyo910/hqdefault.jpg" alt="Pre-Wedding 1">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Pre-Wedding 1</div>
+                    </div>
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('RUeukvf34zU')">
+                        <img src="https://img.youtube.com/vi/RUeukvf34zU/hqdefault.jpg" alt="Pre-Wedding 2">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Pre-Wedding 2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reel Videos Container (Vertical 9:16) -->
+        <div id="reel-videos" class="social-videos">
+            <div class="social-type-group">
+                <div class="social-video-row">
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('06kiWA0ZH-g', true)">
+                        <img src="https://img.youtube.com/vi/06kiWA0ZH-g/hqdefault.jpg" alt="Reel 1">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Reel 1</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('vnSJspk3mkk', true)">
+                        <img src="https://img.youtube.com/vi/vnSJspk3mkk/hqdefault.jpg" alt="Reel 2">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Reel 2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MOTION GRAPHICS MODAL -->
+    <div id="motion-segments" class="sub-segments">
+        <span class="sub-segments-close hvr" onclick="closeAllSegments()">&times;</span>
+        
+        <!-- Digital Invitation Selector -->
+        <div class="segment-card category-selector-card hvr" onclick="toggleCategoryGroup('motion-segments', 'mg-invitation-videos')">
+            <div class="icon-digital-invite">
+                <div class="d-seal"></div>
+                <div class="d-line"></div>
+                <div class="d-line short"></div>
+            </div>
+            <div class="segment-label">Invitation</div>
+        </div>
+
+        <!-- Universal Social Media Selector -->
+        <div class="segment-card category-selector-card hvr" onclick="toggleCategoryGroup('motion-segments', 'mg-social-videos')">
+            <div class="icon-social-media-hub">
+                <div class="hub-branch branch-top"></div>
+                <div class="hub-branch branch-bottom"></div>
+                <div class="hub-node node-main"></div>
+                <div class="hub-node node-top"></div>
+                <div class="hub-node node-bottom"></div>
+            </div>
+            <div class="segment-label">Social</div>
+        </div>
+
+        <!-- Vertical 9:16 Invitation 8 Videos -->
+        <div id="mg-invitation-videos" class="social-videos">
+            <div class="social-type-group">
+                <div class="social-type-title">Invitation Films</div>
+                <div class="social-video-row">
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('wc7BUYE9Kbc', true)">
+                        <img src="https://img.youtube.com/vi/wc7BUYE9Kbc/hqdefault.jpg" alt="Invite 1">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Invite 1</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('62WMlScy4gk', true)">
+                        <img src="https://img.youtube.com/vi/62WMlScy4gk/hqdefault.jpg" alt="Invite 2">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Invite 2</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('_N2zlhrWgA0', true)">
+                        <img src="https://img.youtube.com/vi/_N2zlhrWgA0/hqdefault.jpg" alt="Invite 3">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Invite 3</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('CWuzzEaS3BE', true)">
+                        <img src="https://img.youtube.com/vi/CWuzzEaS3BE/hqdefault.jpg" alt="Invite 4">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Invite 4</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('9gdgKNDCYCY', true)">
+                        <img src="https://img.youtube.com/vi/9gdgKNDCYCY/hqdefault.jpg" alt="Invite 5">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Invite 5</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('7SC8tIZ10hM', true)">
+                        <img src="https://img.youtube.com/vi/7SC8tIZ10hM/hqdefault.jpg" alt="Invite 6">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Invite 6</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('mxwUQG7jGt8', true)">
+                        <img src="https://img.youtube.com/vi/mxwUQG7jGt8/hqdefault.jpg" alt="Invite 7">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Invite 7</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('rE3NFtOqGKA', true)">
+                        <img src="https://img.youtube.com/vi/rE3NFtOqGKA/hqdefault.jpg" alt="Invite 8">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Invite 8</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Motion Graphics Social Videos -->
+        <div id="mg-social-videos" class="social-videos">
+            <!-- 4 Vertical Social Highlights Videos -->
+            <div class="social-type-group">
+                <div class="social-type-title">Social Highlights</div>
+                <div class="social-video-row">
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('vrBqLW7Vk3g', true)">
+                        <img src="https://img.youtube.com/vi/vrBqLW7Vk3g/hqdefault.jpg" alt="Social 1">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Social 1</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('Y77jerIrXIU', true)">
+                        <img src="https://img.youtube.com/vi/Y77jerIrXIU/hqdefault.jpg" alt="Social 2">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Social 2</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('XWgV-4_3I-Q', true)">
+                        <img src="https://img.youtube.com/vi/XWgV-4_3I-Q/hqdefault.jpg" alt="Social 3">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Social 3</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('F9WYJhmXMYc', true)">
+                        <img src="https://img.youtube.com/vi/F9WYJhmXMYc/hqdefault.jpg" alt="Social 4">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Social 4</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real Estate (3 Reels) -->
+            <div class="social-type-group">
+                <div class="social-type-title">Real Estate</div>
+                <div class="social-video-row">
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('b_yUL51t3pk', true)">
+                        <img src="https://img.youtube.com/vi/b_yUL51t3pk/hqdefault.jpg" alt="Real Estate 1">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Estate 1</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('cJtOCX69_9k', true)">
+                        <img src="https://img.youtube.com/vi/cJtOCX69_9k/hqdefault.jpg" alt="Real Estate 2">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Estate 2</div>
+                    </div>
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('rDJvTLWeNQs', true)">
+                        <img src="https://img.youtube.com/vi/rDJvTLWeNQs/hqdefault.jpg" alt="Real Estate 3">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">Estate 3</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YouTube Long (1 Video) -->
+            <div class="social-type-group">
+                <div class="social-type-title">YouTube Long</div>
+                <div class="social-video-row">
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('HGJvGrAxmUc')">
+                        <img src="https://img.youtube.com/vi/HGJvGrAxmUc/hqdefault.jpg" alt="YT Long">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">YouTube Long</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAS (1 Video - Horizontal 16:9) -->
+            <div class="social-type-group">
+                <div class="social-type-title">SAS</div>
+                <div class="social-video-row">
+                    <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('6ltyhNcUk9c')">
+                        <img src="https://img.youtube.com/vi/6ltyhNcUk9c/hqdefault.jpg" alt="SAS Promo">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">SAS Promo</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UGC (1 Reel) -->
+            <div class="social-type-group">
+                <div class="social-type-title">UGC</div>
+                <div class="social-video-row">
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('UL5t_pmjAW0', true)">
+                        <img src="https://img.youtube.com/vi/UL5t_pmjAW0/hqdefault.jpg" alt="UGC Promo">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">UGC Promo</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YouTube Short (1 Reel) -->
+            <div class="social-type-group">
+                <div class="social-type-title">YouTube Short</div>
+                <div class="social-video-row">
+                    <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('kzGEoMdNYZA', true)">
+                        <img src="https://img.youtube.com/vi/kzGEoMdNYZA/hqdefault.jpg" alt="YT Short">
+                        <i class="fas fa-play play-indicator"></i>
+                        <div class="segment-label">YT Short</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. AI INNOVATION MODAL -->
+    <div id="ai-segments" class="sub-segments">
+        <span class="sub-segments-close hvr" onclick="closeAllSegments()">&times;</span>
+        <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('JZHPdo2SyZA', true)">
+            <img src="https://img.youtube.com/vi/JZHPdo2SyZA/hqdefault.jpg" alt="AI 1">
+            <i class="fas fa-play play-indicator"></i>
+            <div class="segment-label">AI Visual 1</div>
+        </div>
+        <div class="segment-card video-card-item hvr" onclick="openYouTubeModal('m99R54HcbAw')">
+            <img src="https://img.youtube.com/vi/m99R54HcbAw/hqdefault.jpg" alt="AI 2">
+            <i class="fas fa-play play-indicator"></i>
+            <div class="segment-label">AI Visual 2</div>
+        </div>
+        <div class="segment-card vertical-card-item hvr" onclick="openYouTubeModal('cQYBPMg6XPA', true)">
+            <img src="https://img.youtube.com/vi/cQYBPMg6XPA/hqdefault.jpg" alt="AI 3">
+            <i class="fas fa-play play-indicator"></i>
+            <div class="segment-label">AI Visual 3</div>
+        </div>
+    </div>
+
+    <div class="social-sidebar" id="sidebar">
+        <a href="tel:8617029476" class="hvr"><i class="fas fa-phone-alt"></i></a>
+        <a href="https://www.youtube.com/@richdotcomproduction9354" target="_blank" class="hvr"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.instagram.com/richdotcom__production" target="_blank" class="hvr"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/richdotcom3" target="_blank" class="hvr"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/8617029476" target="_blank" class="hvr"><i class="fab fa-whatsapp"></i></a>
+    </div>
+
+    <nav>
+        <div class="nav-links-left"><img src="studio-logo.png" alt="RDC" class="logo-img">
+            <ul><li><a href="#" class="hvr">Home</a></li><li><a href="#portfolio" class="hvr">Showcase</a></li><li><a href="#capabilities" class="hvr">Capabilities</a></li><li><a href="#news" class="hvr">News</a></li><li><a href="#contact" class="hvr">Contact</a></li></ul>
+        </div>
+        <a href="#contact" class="nav-btn hvr">Start Collaboration</a>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="video-background-wrapper">
+            <iframe 
+                id="hero-yt-frame"
+                src="https://www.youtube.com/embed/wBAIY4hpfZk?autoplay=1&mute=1&loop=1&playlist=wBAIY4hpfZk&controls=0&disablekb=1&fs=0&rel=0&playsinline=1&enablejsapi=1" 
+                title="RICHDOTCOM PROMO" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="hero-content reveal">
+            <h1>RICHDOTCOM<br>STUDIO</h1>
+            <a href="#portfolio" class="explore-btn hvr">Explore Work</a>
+        </div>
+        <div class="mute-control hvr" onclick="toggleMute()" id="mute-btn"><i class="fas fa-volume-mute"></i></div>
+    </header>
+
+    <section id="portfolio" class="reveal">
+        <h2 class="section-title">Showcase</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item hvr" onclick="toggleSegments('editing-segments')">
+                <div class="art-desktop"><div class="timeline"></div><div class="panel"></div></div>
+                <div class="portfolio-label">Video Editing</div>
+            </div>
+
+            <div class="portfolio-item hvr" onclick="toggleSegments('motion-segments')">
+                <div class="art-box"><div class="art-ball"></div></div>
+                <div class="portfolio-label">Motion Graphics</div>
+            </div>
+
+            <div class="portfolio-item hvr" onclick="toggleSegments('ai-segments')">
+                <div class="art-ai-neural"><div class="neural-orbit"></div><div class="neural-node"></div><div class="bolt" style="top:10px; left:20px;"></div></div>
+                <div class="portfolio-label">AI Innovation</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="capabilities" class="reveal">
+        <h2 class="section-title">Capabilities</h2>
+        <div class="services-container">
+            <div class="service-card">
+                <h3>Video Editing</h3>
+                <ul>
+                    <li>Wedding Films & Highlights</li>
+                    <li>Story-Driven Editing</li>
+                    <li>Cinematic Color Grading</li>
+                    <li>Corporate Films & Brand Promos</li>
+                    <li>Executive & Client Interviews</li>
+                    <li>Social Media Content</li>
+                    <li>Digital & Performance Ads</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h3>Design</h3>
+                <ul>
+                    <li>2D & 3D Motion Graphics</li>
+                    <li>Luxury Brand Animations</li>
+                    <li>Main Titles & Openers</li>
+                    <li>Lower Thirds & Graphic Systems</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h3>AI Innovation</h3>
+                <ul>
+                    <li>AI-Assisted Editing</li>
+                    <li>AI Clean-ups & Object Removal</li>
+                    <li>AI Rotoscoping & Masking</li>
+                    <li>AI Upscaling & Restoration</li>
+                    <li>AI Color Matching</li>
+                    <li>Product Animation</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="news" class="reveal">
+        <h2 class="section-title">News</h2>
+        <div class="news-container">
+            <div class="news-card hvr"><h3>New Studio Identity</h3><p class="news-date">FEBRUARY 2026</p></div>
+            <div class="news-card hvr"><h3>VFX Global Standards</h3><p class="news-date">JANUARY 2026</p></div>
+        </div>
+    </section>
+
+    <div class="client-ticker reveal">
+        <h2 class="section-title" style="text-align: center; border: none; letter-spacing: 12px; margin-bottom: 20px;">Collaborations</h2>
+        <div class="client-ticker">
+            <div class="ticker-track">
+                <img src="10 downing.png" alt="10" class="ticker-logo">
+                <img src="birla.png" alt="birla" class="ticker-logo">
+                <img src="blumbuds.png" alt="blumbuds" class="ticker-logo">
+                <img src="Honda.png" alt="honda" class="ticker-logo">
+                <img src="Hyatt Regency.png" alt="hyatt" class="ticker-logo hyatt-logo">
+                <img src="kahhak.png" alt="kahhak" class="ticker-logo">
+                <img src="Kia.png" alt="kia" class="ticker-logo">
+                <img src="shanghai.png" alt="shanghai" class="ticker-logo">
+                <img src="suger and spice.png" alt="sugar" class="ticker-logo sugar-logo">
+                <img src="technosoft.png" alt="techno" class="ticker-logo">
+                <img src="10 downing.png" alt="10" class="ticker-logo">
+                <img src="birla.png" alt="birla" class="ticker-logo">
+                <img src="blumbuds.png" alt="blumbuds" class="ticker-logo">
+                <img src="Honda.png" alt="honda" class="ticker-logo">
+                <img src="Hyatt Regency.png" alt="hyatt" class="ticker-logo hyatt-logo">
+                <img src="kahhak.png" alt="kahhak" class="ticker-logo">
+                <img src="Kia.png" alt="kia" class="ticker-logo">
+                <img src="shanghai.png" alt="shanghai" class="ticker-logo">
+                <img src="suger and spice.png" alt="sugar" class="ticker-logo sugar-logo">
+                <img src="technosoft.png" alt="techno" class="ticker-logo">
+            </div>
+        </div>
+    </div>
+
+    <section id="why" class="reveal" style="background-color: #050505;">
+        <h2 class="section-title">Why Work With Us</h2>
+        <div class="why-container">
+            <div class="why-card hvr"><i class="fas fa-bolt"></i><h3>Modern Workflow</h3><p>We blend AI speed with artistic soul to deliver faster, higher-quality results.</p></div>
+            <div class="why-card hvr"><i class="fas fa-shield-alt"></i><h3>Reliable Quality</h3><p>Agency-level precision ensuring every project meets global industry standards.</p></div>
+            <div class="why-card hvr"><i class="fas fa-history"></i><h3>8 Years Experience</h3><p>A proven track record bringing expert VFX and motion skills to every production.</p></div>
+        </div>
+    </section>
+
+    <section id="contact" class="reveal">
+        <div class="contact-container">
+            <h2 class="section-title" style="border:none; padding:0; text-align:center; margin-bottom: 50px;">Contact</h2>
+            <form class="contact-form" id="mainContactForm">
+                <input type="text" name="name" placeholder="NAME" required class="hvr">
+                <input type="email" name="email" placeholder="EMAIL" required class="hvr">
+                <textarea rows="4" name="message" placeholder="PROJECT VISION" class="hvr" required></textarea>
+                <button type="submit" class="hvr">Send Message</button>
+                <div class="form-status" id="formStatus"></div>
+            </form>
+        </div>
+    </section>
+
+    <footer><div style="color: #fff; font-weight: 900; letter-spacing: 5px;">RDC</div><div>&copy; 2026 RICHDOTCOM STUDIO</div></footer>
+
+    <!-- LIGHTBOX MODAL FOR YOUTUBE VIDEOS -->
+    <div id="videoModal" class="video-modal">
+        <div class="video-modal-inner" id="videoModalInner">
+            <span class="video-modal-close hvr" id="videoModalClose">&times;</span>
+            <div id="ytPlayerContainer" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        const follower = document.getElementById('cursor-follower');
+        const muteBtn = document.getElementById('mute-btn');
+        const showcaseBackdrop = document.getElementById('showcaseBackdrop');
+        const heroFrame = document.getElementById('hero-yt-frame');
+
+        // --- YOUTUBE HERO MUTE / UNMUTE ---
+        let isHeroMuted = true;
+        function toggleMute() {
+            isHeroMuted = !isHeroMuted;
+            if (isHeroMuted) {
+                heroFrame.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            } else {
+                heroFrame.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            }
+        }
+
+        const updateHoverables = () => {
+            document.querySelectorAll('.hvr').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+        };
+
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll(".reveal").forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add("active");
+            });
+        });
+
+        function closeAllSegments() {
+            document.querySelectorAll('.sub-segments').forEach(seg => { 
+                seg.classList.remove('active'); 
+            });
+            document.querySelectorAll('.social-videos').forEach(group => {
+                group.classList.remove('active');
+            });
+            showcaseBackdrop.classList.remove('active');
+        }
+
+        function toggleSegments(id) {
+            const target = document.getElementById(id);
+            const isCurrentlyActive = target.classList.contains('active');
+            
+            closeAllSegments();
+            
+            if (!isCurrentlyActive) {
+                target.classList.add('active');
+                showcaseBackdrop.classList.add('active');
+            }
+            updateHoverables();
+        }
+
+        showcaseBackdrop.addEventListener('click', closeAllSegments);
+        document.addEventListener('keydown', (e) => { 
+            if (e.key === 'Escape') {
+                closeAllSegments();
+                closeVideoModal();
+            }
+        });
+
+        function toggleCategoryGroup(panelId, targetId) {
+            const target = document.getElementById(targetId);
+            const isCurrentlyActive = target.classList.contains('active');
+            
+            document.querySelectorAll(`#${panelId} .social-videos`).forEach(el => {
+                el.classList.remove('active');
+            });
+
+            if (!isCurrentlyActive) {
+                target.classList.add('active');
+            }
+            updateHoverables();
+        }
+
+        const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+        if (!isTouchDevice) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+                follower.style.transform = `translate3d(${e.clientX - 20}px, ${e.clientY - 20}px, 0)`;
+            });
+        }
+
+        // --- YOUTUBE POPUP MODAL FUNCTIONALITY ---
+        const videoModal = document.getElementById('videoModal');
+        const videoModalInner = document.getElementById('videoModalInner');
+        const ytPlayerContainer = document.getElementById('ytPlayerContainer');
+        const videoModalClose = document.getElementById('videoModalClose');
+
+        function openYouTubeModal(videoId, isVertical = false) {
+            if (isVertical) {
+                videoModalInner.classList.add('vertical-modal');
+            } else {
+                videoModalInner.classList.remove('vertical-modal');
+            }
+            
+            ytPlayerContainer.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe>
+            `;
+            videoModal.classList.add('active');
+        }
+
+        function closeVideoModal() {
+            videoModal.classList.remove('active');
+            ytPlayerContainer.innerHTML = '';
+        }
+
+        videoModalClose.addEventListener('click', closeVideoModal);
+        videoModal.addEventListener('click', (e) => { 
+            if (e.target === videoModal) closeVideoModal(); 
+        });
+
+        updateHoverables();
+
+        // --- CONTACT FORM ---
+        const FORM_ENDPOINT = "https://formsubmit.co/ajax/richdotcom333@gmail.com";
+        const contactForm = document.getElementById('mainContactForm');
+        const formStatus = document.getElementById('formStatus');
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            formStatus.textContent = '';
+            formStatus.className = 'form-status';
+
+            try {
+                const formData = new FormData(contactForm);
+                const response = await fetch(FORM_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    formStatus.textContent = "Message sent — we'll be in touch soon.";
+                    formStatus.classList.add('success');
+                    contactForm.reset();
+                } else {
+                    throw new Error('Non-OK response');
+                }
+            } catch (err) {
+                formStatus.textContent = 'Something went wrong. Please email or WhatsApp us directly.';
+                formStatus.classList.add('error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            }
+        });
+    </script>
+</body>
+</html>
