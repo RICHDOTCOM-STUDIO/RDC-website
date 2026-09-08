@@ -309,6 +309,7 @@
 
     <div id="showcaseBackdrop" class="showcase-backdrop"></div>
 
+    <!-- 1. VIDEO EDITING MODAL -->
     <div id="editing-segments" class="sub-segments">
         <span class="sub-segments-close" onclick="closeAllSegments()">&times;</span>
         
@@ -405,6 +406,7 @@
         </div>
     </div>
 
+    <!-- 2. MOTION GRAPHICS MODAL -->
     <div id="motion-segments" class="sub-segments">
         <span class="sub-segments-close" onclick="closeAllSegments()">&times;</span>
         
@@ -548,6 +550,7 @@
         </div>
     </div>
 
+    <!-- 3. AI INNOVATION MODAL -->
     <div id="ai-segments" class="sub-segments">
         <span class="sub-segments-close" onclick="closeAllSegments()">&times;</span>
         <div class="segment-card vertical-card-item" onclick="openYouTubeModal('JZHPdo2SyZA', true)">
@@ -579,6 +582,7 @@
         <a href="#contact" class="nav-btn">Start Collaboration</a>
     </nav>
 
+    <!-- HERO SECTION -->
     <header class="hero" id="heroSection">
         <div class="video-background-wrapper">
             <div id="hero-yt-player"></div>
@@ -708,6 +712,7 @@
 
     <footer><div style="color: #fff; font-weight: 900; letter-spacing: 5px;">RDC</div><div>&copy; 2026 RICHDOTCOM STUDIO</div></footer>
 
+    <!-- LIGHTBOX MODAL -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-inner" id="videoModalInner">
             <span class="video-modal-close" id="videoModalClose">&times;</span>
@@ -763,7 +768,7 @@
             });
         }
 
-        // Mobile browsers block autoplay with sound by default; unmute on initial tap/scroll
+        // Unmute on first interaction
         const enableSoundOnFirstInteraction = () => {
             if (heroPlayer && typeof heroPlayer.unMute === 'function') {
                 heroPlayer.unMute();
