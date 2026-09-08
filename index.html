@@ -72,8 +72,8 @@
         }
         .video-background-wrapper iframe, .video-background-wrapper #hero-yt-player {
             position: absolute; top: 50%; left: 50%;
-            width: 100vw; height: 56.25vw; /* 16:9 ratio */
-            min-height: 100vh; min-width: 177.77vh; /* 16:9 ratio */
+            width: 100vw; height: 56.25vw;
+            min-height: 100vh; min-width: 177.77vh;
             transform: translate(-50%, -50%);
             border: none;
             pointer-events: none;
@@ -147,7 +147,7 @@
         }
         .sub-segments-close:hover { opacity: 1; }
 
-        /* --- MODAL CATEGORY SELECTOR CARDS & ANIMATED LOGOS --- */
+        /* --- CATEGORY SELECTOR CARDS & ANIMATED LOGOS --- */
         .category-selector-card { 
             position: relative; flex: 0 1 180px !important; max-width: 200px; padding: 25px 15px 35px; 
             aspect-ratio: 1/1; background: #0c0c0c; border: 1px solid #1c1c1c; 
@@ -158,7 +158,7 @@
             border-color: #fff; background: #141414; transform: translateY(-4px);
         }
 
-        /* 1. Corporate Briefcase Animation */
+        /* 1. Corporate Briefcase */
         .icon-corporate {
             width: 44px; height: 30px; border: 2px solid #555; border-radius: 4px;
             position: relative; transition: all 0.35s ease;
@@ -182,7 +182,7 @@
             background: #fff; box-shadow: 0 0 8px #fff;
         }
 
-        /* 2. Social Wedding Rings Animation */
+        /* 2. Social Wedding Rings (Video Editing modal) */
         .icon-wedding-rings { width: 50px; height: 34px; position: relative; transition: 0.35s ease; }
         .ring-left, .ring-right { 
             position: absolute; width: 22px; height: 22px; border: 2px solid #555; 
@@ -204,7 +204,7 @@
             background: var(--electric-blue); box-shadow: 0 0 14px var(--electric-blue); transform: rotate(225deg) scale(1.3);
         }
 
-        /* 3. Reel Phone Animation */
+        /* 3. Reel Phone */
         .icon-reel { 
             width: 28px; height: 42px; border: 2px solid #555; border-radius: 5px; 
             position: relative; display: flex; align-items: center; justify-content: center; 
@@ -222,7 +222,7 @@
             border-left-color: #fff; transform: scale(1.3); filter: drop-shadow(0 0 6px #fff);
         }
 
-        /* 4. Digital Invite Card Animation */
+        /* 4. Digital Invite Card */
         .icon-digital-invite { 
             width: 42px; height: 32px; border: 2px solid #555; border-radius: 4px; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
@@ -237,20 +237,50 @@
             background: #fff; box-shadow: 0 0 8px #fff; width: 26px;
         }
 
-        /* 5. Social Media Network Hub Animation */
-        .icon-social-media-hub { width: 40px; height: 36px; position: relative; transition: all 0.35s ease; }
+        /* 5. Motion Graphics Original Animated Social Media Hub */
+        .icon-social-media-hub { 
+            width: 44px; height: 40px; position: relative; transition: all 0.35s ease; 
+        }
+        .icon-social-media-hub .hub-line {
+            position: absolute; background: #333; transition: all 0.35s ease;
+        }
+        .icon-social-media-hub .line-1 {
+            width: 22px; height: 2px; top: 18px; left: 10px; transform: rotate(-28deg);
+        }
+        .icon-social-media-hub .line-2 {
+            width: 22px; height: 2px; top: 22px; left: 10px; transform: rotate(28deg);
+        }
         .icon-social-media-hub .hub-node { 
-            position: absolute; width: 8px; height: 8px; border: 2px solid #555; 
-            border-radius: 50%; background: #080808; transition: all 0.35s ease; 
+            position: absolute; width: 10px; height: 10px; border: 2px solid #555; 
+            border-radius: 50%; background: #080808; z-index: 2; transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
-        .icon-social-media-hub .node-main { top: 14px; left: 4px; }
-        .icon-social-media-hub .node-top { top: 2px; right: 6px; }
-        .icon-social-media-hub .node-bottom { bottom: 2px; right: 6px; }
-        .category-selector-card:hover .icon-social-media-hub, .category-selector-card:active .icon-social-media-hub {
-            transform: scale(1.15);
+        .icon-social-media-hub .node-main { top: 15px; left: 2px; }
+        .icon-social-media-hub .node-top { top: 2px; right: 4px; }
+        .icon-social-media-hub .node-bottom { bottom: 2px; right: 4px; }
+
+        .category-selector-card:hover .icon-social-media-hub, 
+        .category-selector-card:active .icon-social-media-hub {
+            transform: scale(1.12);
         }
-        .category-selector-card:hover .hub-node, .category-selector-card:active .hub-node {
-            border-color: var(--electric-blue); box-shadow: 0 0 10px var(--electric-blue); background: #fff;
+        .category-selector-card:hover .hub-line,
+        .category-selector-card:active .hub-line {
+            background: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.4);
+        }
+        .category-selector-card:hover .hub-node, 
+        .category-selector-card:active .hub-node {
+            border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        .category-selector-card:hover .node-main,
+        .category-selector-card:active .node-main {
+            border-color: var(--electric-blue); background: var(--electric-blue); box-shadow: 0 0 15px var(--electric-blue);
+        }
+        .category-selector-card:hover .node-top,
+        .category-selector-card:active .node-top {
+            transform: translate(2px, -2px) scale(1.15);
+        }
+        .category-selector-card:hover .node-bottom,
+        .category-selector-card:active .node-bottom {
+            transform: translate(2px, 2px) scale(1.15);
         }
 
         .category-selector-card .segment-label { 
@@ -346,15 +376,34 @@
             .logo-img { height: 18px; }
             .nav-btn { font-size: 0.55rem; padding: 6px 12px; }
 
-            .hero { padding: 0 5% 15% 5%; align-items: flex-end; }
-            .hero-content h1 { font-size: 1.6rem; letter-spacing: 1px; margin-bottom: 15px; }
-            .explore-btn { font-size: 0.55rem; padding: 8px 16px; }
-
-            /* Mobile full-width background video centering */
-            .video-background-wrapper iframe, .video-background-wrapper #hero-yt-player {
-                width: 320vw !important; height: 180vw !important;
-                min-width: 320vw !important; min-height: 180vw !important;
+            /* Mobile Landscape Hero Fit - Full Frame 16:9 Aspect Coverage */
+            .hero { 
+                height: auto !important;
+                aspect-ratio: 16 / 9;
+                width: 100vw;
+                min-height: unset !important;
+                padding: 0 5% 5% 5%; 
+                align-items: flex-end; 
             }
+            .video-background-wrapper {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+            }
+            .video-background-wrapper iframe, .video-background-wrapper #hero-yt-player {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                min-width: 100% !important;
+                min-height: 100% !important;
+                transform: none !important;
+            }
+
+            .hero-content h1 { font-size: 1.15rem; letter-spacing: 1px; margin-bottom: 8px; }
+            .explore-btn { font-size: 0.5rem; padding: 6px 12px; }
 
             .social-sidebar {
                 position: fixed; bottom: 0; right: 0; top: auto; width: 100%;
@@ -364,7 +413,7 @@
                 padding: 0 15px; z-index: 2000;
             }
             .social-sidebar a i { font-size: 1.2rem; opacity: 0.7; }
-            .mute-control { bottom: 70px; right: 15px; background: rgba(0,0,0,0.6); border-radius: 50%; }
+            .mute-control { bottom: 12px; right: 12px; background: rgba(0,0,0,0.6); border-radius: 50%; padding: 6px; }
 
             section { padding: 70px 5%; }
             .section-title { font-size: 1.3rem; margin-bottom: 30px; }
@@ -510,6 +559,8 @@
 
         <div class="category-selector-card" onclick="toggleCategoryGroup('motion-segments', 'mg-social-videos')">
             <div class="icon-social-media-hub">
+                <div class="hub-line line-1"></div>
+                <div class="hub-line line-2"></div>
                 <div class="hub-node node-main"></div>
                 <div class="hub-node node-top"></div>
                 <div class="hub-node node-bottom"></div>
@@ -660,7 +711,7 @@
     <div class="social-sidebar" id="sidebar">
         <a href="tel:8617029476"><i class="fas fa-phone-alt"></i></a>
         <a href="https://www.youtube.com/@richdotcomproduction9354" target="_blank"><i class="fab fa-youtube"></i></a>
-        <a href="https://www.instagram.com/richdotcom__production" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.instagram.com/richdotcom__studio?stkn=aHFuaGx0amViYjE5" target="_blank"><i class="fab fa-instagram"></i></a>
         <a href="https://www.facebook.com/richdotcom3" target="_blank"><i class="fab fa-facebook-f"></i></a>
         <a href="https://wa.me/8617029476" target="_blank"><i class="fab fa-whatsapp"></i></a>
     </div>
@@ -865,7 +916,7 @@
             });
         }
 
-        // Auto unmute cleanly on very first user interaction if in hero view
+        // Unmute on first interaction
         const enableSoundOnFirstInteraction = () => {
             if (heroPlayer && typeof heroPlayer.unMute === 'function') {
                 heroPlayer.unMute();
