@@ -182,7 +182,7 @@
             background: #fff; box-shadow: 0 0 8px #fff;
         }
 
-        /* 2. Social Wedding Rings */
+        /* 2. Social Wedding Rings (Video Editing modal) */
         .icon-wedding-rings { width: 50px; height: 34px; position: relative; transition: 0.35s ease; }
         .ring-left, .ring-right { 
             position: absolute; width: 22px; height: 22px; border: 2px solid #555; 
@@ -239,22 +239,22 @@
 
         /* 5. Motion Graphics Original Animated Social Media Hub */
         .icon-social-media-hub { 
-            width: 44px; height: 40px; position: relative; transition: all 0.35s ease; 
+            width: 46px; height: 42px; position: relative; transition: all 0.35s ease; 
         }
         .icon-social-media-hub .hub-line {
-            position: absolute; background: #333; transition: all 0.35s ease;
+            position: absolute; background: #444; transition: all 0.35s ease;
         }
         .icon-social-media-hub .line-1 {
-            width: 22px; height: 2px; top: 18px; left: 10px; transform: rotate(-28deg);
+            width: 24px; height: 2px; top: 19px; left: 10px; transform: rotate(-30deg);
         }
         .icon-social-media-hub .line-2 {
-            width: 22px; height: 2px; top: 22px; left: 10px; transform: rotate(28deg);
+            width: 24px; height: 2px; top: 23px; left: 10px; transform: rotate(30deg);
         }
         .icon-social-media-hub .hub-node { 
             position: absolute; width: 10px; height: 10px; border: 2px solid #555; 
             border-radius: 50%; background: #080808; z-index: 2; transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
-        .icon-social-media-hub .node-main { top: 15px; left: 2px; }
+        .icon-social-media-hub .node-main { top: 16px; left: 2px; }
         .icon-social-media-hub .node-top { top: 2px; right: 4px; }
         .icon-social-media-hub .node-bottom { bottom: 2px; right: 4px; }
 
@@ -264,23 +264,23 @@
         }
         .category-selector-card:hover .hub-line,
         .category-selector-card:active .hub-line {
-            background: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.4);
+            background: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.5);
         }
         .category-selector-card:hover .hub-node, 
         .category-selector-card:active .hub-node {
-            border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.6);
         }
         .category-selector-card:hover .node-main,
         .category-selector-card:active .node-main {
-            border-color: var(--electric-blue); background: var(--electric-blue); box-shadow: 0 0 15px var(--electric-blue);
+            border-color: var(--electric-blue); background: var(--electric-blue); box-shadow: 0 0 16px var(--electric-blue);
         }
         .category-selector-card:hover .node-top,
         .category-selector-card:active .node-top {
-            transform: translate(2px, -2px) scale(1.15);
+            transform: translate(2px, -3px) scale(1.18);
         }
         .category-selector-card:hover .node-bottom,
         .category-selector-card:active .node-bottom {
-            transform: translate(2px, 2px) scale(1.15);
+            transform: translate(2px, 3px) scale(1.18);
         }
 
         .category-selector-card .segment-label { 
@@ -376,12 +376,11 @@
             .logo-img { height: 18px; }
             .nav-btn { font-size: 0.55rem; padding: 6px 12px; }
 
-            /* Mobile Landscape Hero Fit */
+            /* Mobile Landscape Hero Fit - Full Screen Width Landscape Video */
             .hero { 
-                height: auto !important;
-                aspect-ratio: 16 / 9;
+                height: 56.25vw !important; 
+                min-height: 260px; 
                 width: 100vw;
-                min-height: unset !important;
                 padding: 0 5% 5% 5%; 
                 align-items: flex-end; 
             }
@@ -542,7 +541,7 @@
         <div id="reel-videos" class="social-videos">
             <div class="social-type-group">
                 <div class="social-video-row">
-                    <!-- Added 3 New Reels (YouTube Shorts & Vimeo) -->
+                    <!-- Added 3 New Reels -->
                     <div class="segment-card vertical-card-item" onclick="openYouTubeModal('MmvuTOzkp7s', true)">
                         <img src="https://img.youtube.com/vi/MmvuTOzkp7s/hqdefault.jpg" alt="Work">
                         <i class="fas fa-play play-indicator"></i>
@@ -596,7 +595,7 @@
             <div class="social-type-group">
                 <div class="social-type-title">Invitation Films</div>
                 <div class="social-video-row">
-                    <!-- Updated with 5 Vimeo Links & Remaining Active Items -->
+                    <!-- 5 Vimeo Invitation Videos -->
                     <div class="segment-card vertical-card-item" onclick="openVimeoModal('1224963505', true)">
                         <img src="https://vumbnail.com/1224963505.jpg" alt="Invitation 1">
                         <i class="fas fa-play play-indicator"></i>
@@ -617,6 +616,7 @@
                         <img src="https://vumbnail.com/1224963638.jpg" alt="Invitation 7">
                         <i class="fas fa-play play-indicator"></i>
                     </div>
+
                     <div class="segment-card vertical-card-item" onclick="openYouTubeModal('wc7BUYE9Kbc', true)">
                         <img src="https://img.youtube.com/vi/wc7BUYE9Kbc/hqdefault.jpg" alt="Work">
                         <i class="fas fa-play play-indicator"></i>
@@ -659,7 +659,7 @@
             <div class="social-type-group">
                 <div class="social-type-title">Real Estate</div>
                 <div class="social-video-row">
-                    <!-- Real-Estate Palisades Updated to Vimeo -->
+                    <!-- Real Estate Palisades Vimeo -->
                     <div class="segment-card vertical-card-item" onclick="openVimeoModal('1224963503', true)">
                         <img src="https://vumbnail.com/1224963503.jpg" alt="Real Estate Palisades">
                         <i class="fas fa-play play-indicator"></i>
@@ -942,7 +942,7 @@
             });
         }
 
-        // Unmute on first interaction
+        // Auto unmute cleanly on first user interaction
         const enableSoundOnFirstInteraction = () => {
             if (heroPlayer && typeof heroPlayer.unMute === 'function') {
                 heroPlayer.unMute();
